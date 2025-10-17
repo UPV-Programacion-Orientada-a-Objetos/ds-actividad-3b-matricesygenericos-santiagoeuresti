@@ -1,35 +1,43 @@
 #include <iostream>
 #include "MatrizDinamica.h"
 
-int main() {
-    std::cout << "Sistema Generico de Analisis de Transformaciones Lineales" << std::endl;
+int main()
+{
+    std::cout << "--- Sistema de Analisis de Transformaciones Lineales ---" << std::endl;
 
+    std::cout << "\n>> Prueba de Matriz ENTERA (Matriz A) <<" << std::endl;
+    std::cout << "Creando Matriz A (Tipo INT) de 2x3..." << std::endl;
     MatrizDinamica<int> A(2, 3);
-    A.inicializar(0);
-    A(0,0) = 1; A(0,1) = 2; A(0,2) = 3;
-    A(1,0) = 4; A(1,1) = 5; A(1,2) = 6;
-
+    std::cout << "\nIngresar valores para A (2x3):" << std::endl;
+    A.ingresarDatos();
     std::cout << "\nMatriz A (int):" << std::endl;
     A.mostrar();
 
-    std::cout << "\nRedimensionando A a 3x3..." << std::endl;
-    A.redimensionar(3,3);
-    std::cout << "Matriz A redimensionada (3x3):" << std::endl;
+    std::cout << "\n>> Redimensionando Matriz A <<" << std::endl;
+    std::cout << "Redimensionando A a 3x3. Datos conservados:" << std::endl;
+    A.redimensionar(3, 3);
     A.mostrar();
 
+    std::cout << "\n>> Prueba de Multiplicacion (Tipo FLOAT) <<" << std::endl;
+    std::cout << "Creando Matriz B (Tipo FLOAT) de 3x2..." << std::endl;
     MatrizDinamica<float> B(3, 2);
-    B.inicializar(0.0f);
-    B(0,0) = 1.5f; B(0,1) = 0.5f;
-    B(1,0) = 2.0f; B(1,1) = 1.0f;
-    B(2,0) = 1.0f; B(2,1) = 2.5f;
+    std::cout << "\nIngresar valores para B (3x2):" << std::endl;
+    B.ingresarDatos();
 
-    std::cout << "\nMatriz B (float):" << std::endl;
-    B.mostrar();
+    MatrizDinamica<float> Afloat(A.getFilas(), A.getColumnas());
+    for (int i = 0; i < A.getFilas(); ++i)
+    {
+        for (int j = 0; j < A.getColumnas(); ++j)
+        {
+            Afloat(i, j) = static_cast<float>(A(i, j));
+        }
+    }
 
-    std::cout << "Acceso A(0,1) = " << A(0,1) << std::endl;
-    A(1,2) = 99;
-    std::cout << "Modificado A(1,2) = 99" << std::endl;
-    A.mostrar();
+    std::cout << "\nMatriz C = A(3x3) x B(3x2) ..." << std::endl;
+    MatrizDinamica<float> C = MatrizDinamica<float>::multiplicar(Afloat, B);
+    std::cout << "\nMatriz C (Resultado 3x2, Tipo FLOAT):" << std::endl;
+    C.mostrar();
 
+    std::cout << "\nLiberando memoria de todas las matrices..." << std::endl;
     return 0;
 }
